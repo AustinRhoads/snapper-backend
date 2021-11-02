@@ -27,3 +27,4 @@
 /config/master.key
 
 #Dont push my .env to git hub
+.env
