@@ -3,6 +3,22 @@ class SessionsController < ApplicationController
     def create
       
       if auth
+        @user = User.find_by(uid: auth['uid'])
+        if !!@user
+          @user = User.new
+          @user.uid = auth['uid']
+          @user.username = auth['info']['name']
+          @user.email = auth['info']['email']
+          @user.password = auth['uid']
+          @user.password_confirmation = auth['uid']
+
+          if @user.save
+            session[:user_id] = @user.id
+          end
+
+        else
+          session[:user_id] = @user.id
+        end
         binding.pry
       end
 
@@ -48,7 +64,7 @@ class SessionsController < ApplicationController
     private
 
     def session_params
-        params.require(:user).permit(:username, :email, :password)
+        params.permit(:username, :email, :password)
     end
 
     def auth
