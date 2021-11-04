@@ -1,33 +1,46 @@
 class SessionsController < ApplicationController
+ # include AuthHelper
 
     def create
       
-      if auth
-        @user = User.find_by(uid: auth['uid'])
-        if !!@user
-          @user = User.new
-          @user.uid = auth['uid']
-          @user.username = auth['info']['name']
-          @user.email = auth['info']['email']
-          @user.password = auth['uid']
-          @user.password_confirmation = auth['uid']
+     
+      #if auth
+#        user = User.find_by(uid: auth['uid'])
+#
+#        if !!user
+#          user = User.new
+#          user.uid = auth['uid']
+#          user.username = auth['info']['name']
+#          user.email = auth['info']['email']
+#          user.password = auth['uid']
+#          user.password_confirmation = auth['uid']
+#          user.save
+#          
+#        end
+#
+#        if user
+#          session[:user_id] = user.id
+#          render json: {
+#            status: :created,
+#            logged_in: true,
+#            user: user,
+#
+#           catches: catches,
+#          }
+#        end
+#        
+      #end
 
-          if @user.save
-            session[:user_id] = @user.id
-          end
-
-        else
-          session[:user_id] = @user.id
-        end
-        binding.pry
-      end
-
-
+    
+      #binding.pry
+        
         @user = User.find_by(username: session_params[:username])
   
         if @user && @user.authenticate(session_params[:password])
           login!
+          
           render json: {
+            status: :created,
             logged_in: true,
             user: @user
           }
@@ -57,7 +70,8 @@ class SessionsController < ApplicationController
         logout!
         render json: {
           status: 200,
-          logged_out: true
+          logged_out: true,
+          logged_in: false
         }
     end
 
