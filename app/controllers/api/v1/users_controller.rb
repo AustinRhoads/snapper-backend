@@ -1,4 +1,4 @@
-class UsersController < ApplicationController
+class Api::V1::UsersController < ApplicationController
 
     def index
         @users = User.all
@@ -13,12 +13,13 @@ class UsersController < ApplicationController
     end
 
     def create
-        binding.pry
+        
         @user = User.new(user_params)
         if @user.save
             login!  
             render json: {
             status: :created,
+            logged_in: true,
             user: @user
         }
        else 
@@ -54,7 +55,7 @@ class UsersController < ApplicationController
     private
 
     def user_params
-        params(:user).permit(:username, :password_digest, :email)
+        params.require(:user).permit(:username, :password, :password_confirmation, :email)
     end
 
 

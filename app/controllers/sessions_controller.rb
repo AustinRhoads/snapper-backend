@@ -37,6 +37,7 @@ class SessionsController < ApplicationController
         @user = User.find_by(username: session_params[:username])
   
         if @user && @user.authenticate(session_params[:password])
+       
           login!
           
           render json: {
@@ -53,6 +54,7 @@ class SessionsController < ApplicationController
     end
 
     def is_logged_in?
+      #binding.pry
         if logged_in? && current_user
             render json: {
               logged_in: true,
@@ -78,7 +80,7 @@ class SessionsController < ApplicationController
     private
 
     def session_params
-        params.permit(:username, :email, :password)
+        params.permit(:session, :username, :email, :password)
     end
 
     def auth
