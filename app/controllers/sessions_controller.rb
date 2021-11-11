@@ -2,37 +2,7 @@ class SessionsController < ApplicationController
  # include AuthHelper
 
     def create
-      
-     
-      #if auth
-#        user = User.find_by(uid: auth['uid'])
-#
-#        if !!user
-#          user = User.new
-#          user.uid = auth['uid']
-#          user.username = auth['info']['name']
-#          user.email = auth['info']['email']
-#          user.password = auth['uid']
-#          user.password_confirmation = auth['uid']
-#          user.save
-#          
-#        end
-#
-#        if user
-#          session[:user_id] = user.id
-#          render json: {
-#            status: :created,
-#            logged_in: true,
-#            user: user,
-#
-#           catches: catches,
-#          }
-#        end
-#        
-      #end
-
-    
-      #binding.pry
+     # binding.pry
         
         @user = User.find_by(username: session_params[:username])
   
@@ -69,7 +39,10 @@ class SessionsController < ApplicationController
     end
 
     def destroy
+      #binding.pry
         logout!
+        user = nil
+        reset_session
         render json: {
           status: 200,
           logged_out: true,
@@ -80,7 +53,7 @@ class SessionsController < ApplicationController
     private
 
     def session_params
-        params.permit(:session, :username, :email, :password)
+        params.require(:session).permit(:session, :username, :email, :password)
     end
 
     def auth

@@ -23,7 +23,9 @@ class ApplicationController < ActionController::Base
     end
 
     def logout!
-           session.clear
+      #binding.pry
+           session.delete :user_id
+           reset_session
     end
 
     def set_user
